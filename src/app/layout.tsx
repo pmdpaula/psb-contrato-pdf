@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 import theme from "@/theme/theme";
 import { Header } from "@/components/Header";
 
+import "@/app/globals.css";
+
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
   subsets: ["latin"],
