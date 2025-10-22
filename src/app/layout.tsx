@@ -1,11 +1,10 @@
-import "./globals.css";
-
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Roboto } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 
 import type { Metadata } from "next";
-import themeDark from "@/theme/themeDark";
+import theme from "@/theme/theme";
+import { Header } from "@/components/Header";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -37,7 +36,10 @@ export default function RootLayout({
       </head>
       <body>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={themeDark}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <Header />
+            {children}
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
