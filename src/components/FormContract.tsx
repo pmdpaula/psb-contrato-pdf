@@ -16,6 +16,7 @@ import {
   type SelectChangeEvent,
 } from "@mui/material";
 import { BatterOptions, FillingOptions, formSkeleton } from "@/data/formSkeleton";
+import { NeonText } from "./NeonText";
 
 export interface FormData {
   nomeCliente: string;
@@ -94,9 +95,9 @@ const FormContract = () => {
 
   const SectionLabel = ({ label }: { label: string }) => {
     return (
-      <Typography variant="h6" gutterBottom>
+      <NeonText variant="h6" gutterBottom>
         {label}
-      </Typography>
+      </NeonText>
     );
   };
 
@@ -133,18 +134,8 @@ const FormContract = () => {
                       required={field.required}
                       disabled={field.disabled}
                       fullWidth
-                      variant="filled"
-                      // size="small"
                       multiline={field.type === "textarea"}
                       minRows={field.type === "textarea" ? 3 : undefined}
-                      sx={{
-                        border: "none",
-                        // borderBottom: "2px solid #fff",
-                        backgroundColor: "transparent",
-                        color: "#fff",
-                        outline: "none",
-                        transition: "border-bottom-color 0.5s ease, box-shadow 0.5s ease",
-                      }}
                     />
                   )}
 
