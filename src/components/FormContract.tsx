@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { generatePdfAsModel } from "@/app/actions";
+import { useEffect, useState } from "react";
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,11 +10,12 @@ import {
   Select,
   Stack,
   TextField,
-  Typography,
   type SelectChangeEvent,
 } from "@mui/material";
+
 import { BatterOptions, FillingOptions, formSkeleton } from "@/data/formSkeleton";
 import { NeonText } from "./NeonText";
+import { getCookie, setCookie, hasCookie } from "cookies-next";
 
 export interface FormData {
   nomeCliente: string;
@@ -41,32 +40,45 @@ export interface FormData {
   telefoneContatoEvento: string;
 }
 
-const FormContract = () => {
-  const initialFormState: FormData = {
-    nomeCliente: "",
-    dadosContratada:
-      "Patricia Edwiges Alves de Siqueira, confeiteira, representante da Patrícia Siqueira Bolos, localizada na rua Desembargador Izidro, 126 702 B - Tijuca - RJ , inscrita no CPF : 02900486726",
-    qtdFatias: "",
-    massaBolo: "",
-    recheio1: "",
-    recheio2: "",
-    recheio3: "",
-    observacoesBolo: "",
-    modeloBolo: "",
-    valorBolo: "",
-    sinalBolo: "",
-    saldoBolo: "",
-    formaPagamentoBolo: "",
-    localEntrega: "",
-    dataEntrega: "",
-    horaEntrega: "",
-    telefoneCliente: "",
-    telefoneAdicional: "",
-    nomeContatoEvento: "",
-    telefoneContatoEvento: "",
-  };
+export const initialFormState: FormData = {
+  nomeCliente: "",
+  dadosContratada:
+    "Patricia Edwiges Alves de Siqueira, confeiteira, representante da Patrícia Siqueira Bolos, localizada na rua Desembargador Izidro, 126 702 B - Tijuca - RJ , inscrita no CPF : 02900486726",
+  qtdFatias: "",
+  massaBolo: "",
+  recheio1: "",
+  recheio2: "",
+  recheio3: "",
+  observacoesBolo: "",
+  modeloBolo: "",
+  valorBolo: "",
+  sinalBolo: "",
+  saldoBolo: "",
+  formaPagamentoBolo: "",
+  localEntrega: "",
+  dataEntrega: "",
+  horaEntrega: "",
+  telefoneCliente: "",
+  telefoneAdicional: "",
+  nomeContatoEvento: "",
+  telefoneContatoEvento: "",
+};
 
+const FormContract = () => {
   const [formData, setFormData] = useState<FormData>(initialFormState);
+
+  useEffect(() => {
+    const checkAvaibilityOfFormData = async () => {
+      const isFormDataAvailable = hasCookie("formData");
+      const availableFormData = isFormDataAvailable
+        ? (JSON.parse((await getCookie("formData")) as string) as FormData)
+        : initialFormState;
+
+      setFormData(availableFormData);
+    };
+
+    checkAvaibilityOfFormData();
+  }, []);
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -84,15 +96,6 @@ const FormContract = () => {
     }));
   };
 
-  // function handleSubmit(e: React.FormEvent) {
-  //   e.preventDefault();
-  // }
-
-  function handleSubmitModel(e: React.FormEvent) {
-    e.preventDefault();
-    generatePdfAsModel(formData);
-  }
-
   const SectionLabel = ({ label }: { label: string }) => {
     return (
       <NeonText variant="h6" gutterBottom>
@@ -100,6 +103,13 @@ const FormContract = () => {
       </NeonText>
     );
   };
+
+  useEffect(() => {
+    setCookie("formData", JSON.stringify(formData), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 1 month
+    });
+  }, [formData]);
 
   return (
     <>
@@ -120,27 +130,41 @@ const FormContract = () => {
             <Stack spacing={2} mb={2}>
               {section.fields.map((field) => (
                 <Box key={field.name}>
-                  {(field.type === "text" ||
-                    field.type === "number" ||
-                    field.type === "date" ||
-                    field.type === "textarea") && (
+                  {field.name === "saldoBolo" ? (
                     <TextField
                       id={field.name}
                       name={field.name}
                       label={field.label}
                       type={field.type}
-                      value={formData[field.name as keyof FormData]}
-                      onChange={handleInputChange}
-                      required={field.required}
-                      disabled={field.disabled}
+                      value={Number(formData.valorBolo) - Number(formData.sinalBolo)}
+                      disabled
                       fullWidth
-                      multiline={field.type === "textarea"}
-                      minRows={field.type === "textarea" ? 3 : undefined}
+                      size="small"
                     />
+                  ) : (
+                    (field.type === "text" ||
+                      field.type === "number" ||
+                      field.type === "date" ||
+                      field.type === "textarea") && (
+                      <TextField
+                        id={field.name}
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        value={formData[field.name as keyof FormData]}
+                        onChange={handleInputChange}
+                        required={field.required}
+                        disabled={field.disabled}
+                        fullWidth
+                        size="small"
+                        multiline={field.type === "textarea"}
+                        minRows={field.type === "textarea" ? 3 : undefined}
+                      />
+                    )
                   )}
 
                   {field.type === "selection" && (
-                    <FormControl fullWidth>
+                    <FormControl fullWidth size="small">
                       <InputLabel id={`select-label-${field.name}`}>{field.label}</InputLabel>
                       <Select
                         labelId={`select-label-${field.name}`}
@@ -170,18 +194,6 @@ const FormContract = () => {
             </Stack>
           </Paper>
         ))}
-
-        <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={handleSubmitModel}
-            sx={{ minWidth: 200, height: 48 }}
-          >
-            Gerar Contrato Completo
-          </Button>
-        </Box>
       </form>
     </>
   );

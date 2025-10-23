@@ -9,6 +9,7 @@ import logoPSB from "@/assets/psb-logo_bgdark.svg";
 import { NeonText } from "./NeonText";
 import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
+import { OptionsMenu } from "./OptionsMenu";
 
 export const Header = () => {
   const theme = useTheme();
@@ -18,7 +19,7 @@ export const Header = () => {
 
   return (
     <header>
-      <Box width="100%" mb={isBreakpointLg ? 11 : isBreakpointMd ? 10 : isBreakpointSm ? 8 : 6}>
+      <Box width="100%" mb={isBreakpointLg ? 13 : isBreakpointMd ? 12 : isBreakpointSm ? 10 : 8}>
         <AppBar
           position="fixed"
           sx={{
@@ -37,6 +38,8 @@ export const Header = () => {
             <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
               Contrato
             </NeonText>
+
+            <OptionsMenu />
           </Stack>
         </AppBar>
       </Box>
