@@ -43,7 +43,7 @@ const FullScreenDialog = ({ isOpened = false, onClose }: FullScreenDialogProps) 
         transition: Transition,
       }}
     >
-      <AppBar sx={{ position: "relative" }}>
+      <AppBar sx={{ position: "relative", p: isBreakpointMd ? 1 : 0.5 }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={onClose} aria-label="close">
             <CloseIcon />
