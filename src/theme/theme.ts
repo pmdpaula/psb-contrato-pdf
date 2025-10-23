@@ -1,7 +1,6 @@
 "use client";
 
 import { createTheme } from "@mui/material";
-import { grey } from "@mui/material/colors";
 
 // Create a theme instance.
 const theme = createTheme({

@@ -23,8 +23,8 @@ import { generatePdfAsModel } from "@/app/actions";
 export const OptionsMenu = () => {
   const theme = useTheme();
 
-  const isBreakpointXs = useMediaQuery(theme.breakpoints.up("xs"));
-  const isBreakpointSm = useMediaQuery(theme.breakpoints.up("sm"));
+  // const isBreakpointXs = useMediaQuery(theme.breakpoints.up("xs"));
+  // const isBreakpointSm = useMediaQuery(theme.breakpoints.up("sm"));
   const isBreakpointMd = useMediaQuery(theme.breakpoints.up("md"));
   const isBreakpointLg = useMediaQuery(theme.breakpoints.up("lg"));
 
