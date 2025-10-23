@@ -29,7 +29,7 @@ export const Header = () => {
           }}
         >
           <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={2}>
               <Paper
                 elevation={0}
                 sx={{ p: 1.2, bgcolor: "rgba(255, 255, 255, 0.1)", borderRadius: "50%" }}
@@ -37,16 +37,16 @@ export const Header = () => {
                 <Image
                   src={logoPSB}
                   alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
-                  width={isBreakpointLg ? 60 : isBreakpointMd ? 40 : 20}
+                  width={isBreakpointLg ? 50 : isBreakpointMd ? 25 : 15}
                 />
               </Paper>
 
-              <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+              <NeonText variant={isBreakpointLg ? "h3" : "h5"} fontFamily="Ephesis" color="pink">
                 Patricia Siqueira
               </NeonText>
             </Stack>
 
-            <Typography variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+            <Typography variant={isBreakpointLg ? "h3" : "h5"} color="pink">
               Contrato
             </Typography>
 

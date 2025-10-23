@@ -62,12 +62,12 @@ const FullScreenDialog = ({ isOpened = false, onClose }: FullScreenDialogProps) 
                 width={isBreakpointLg ? 60 : isBreakpointMd ? 40 : 20}
               />
 
-              <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+              <NeonText variant={isBreakpointLg ? "h3" : "h5"} fontFamily="Ephesis" color="pink">
                 Patricia Siqueira
               </NeonText>
             </Stack>
 
-            <Typography variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+            <Typography variant={isBreakpointLg ? "h3" : "h5"} color="pink">
               Rascunho
             </Typography>
           </Stack>
