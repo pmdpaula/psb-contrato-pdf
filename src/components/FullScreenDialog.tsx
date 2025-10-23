@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import PreviewFile from "./PreviewFile";
-import { Stack, useMediaQuery } from "@mui/material";
+import { Stack, Typography, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import { NeonText } from "./NeonText";
@@ -25,7 +25,6 @@ const Transition = React.forwardRef(function Transition(
 interface FullScreenDialogProps {
   isOpened: boolean;
   onClose: () => void;
-  // data: FormData;
 }
 
 const FullScreenDialog = ({ isOpened = false, onClose }: FullScreenDialogProps) => {
@@ -53,18 +52,24 @@ const FullScreenDialog = ({ isOpened = false, onClose }: FullScreenDialogProps) 
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            spacing={2}
-            sx={{ flexGrow: 1, ml: 2 }}
+            spacing={1}
+            sx={{ flexGrow: 1, ml: isBreakpointLg ? 2 : 0.5 }}
           >
-            <Image
-              src={logoPSB}
-              alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
-              width={isBreakpointLg ? 340 : isBreakpointMd ? 300 : 140}
-            />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Image
+                src={logoPSB}
+                alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
+                width={isBreakpointLg ? 60 : isBreakpointMd ? 40 : 20}
+              />
 
-            <NeonText variant={isBreakpointLg ? "h3" : "h5"} fontFamily="Ephesis" color="pink">
+              <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+                Patricia Siqueira
+              </NeonText>
+            </Stack>
+
+            <Typography variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
               Rascunho
-            </NeonText>
+            </Typography>
           </Stack>
         </Toolbar>
       </AppBar>

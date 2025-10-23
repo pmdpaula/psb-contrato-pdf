@@ -4,7 +4,7 @@ import Image from "next/image";
 import Typography, { type TypographyProps } from "@mui/material/Typography";
 import { Container, Stack } from "@mui/material";
 import { getCookie } from "cookies-next";
-import logoPSB from "@/assets/psb-logo_bglight.svg";
+import logoPSB from "@/assets/psb-banner_bglight.svg";
 
 interface TextProps extends TypographyProps {
   children: React.ReactNode;

@@ -1,15 +1,15 @@
 "use client";
 
+import { NeonText } from "./NeonText";
+import { OptionsMenu } from "./OptionsMenu";
+import { Paper, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import useMediaQuery from "@mui/material/useMediaQuery";
-
 import Image from "next/image";
 import logoPSB from "@/assets/psb-logo_bgdark.svg";
-import { NeonText } from "./NeonText";
-import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
-import { OptionsMenu } from "./OptionsMenu";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const Header = () => {
   const theme = useTheme();
@@ -29,15 +29,26 @@ export const Header = () => {
           }}
         >
           <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}>
-            <Image
-              src={logoPSB}
-              alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
-              width={isBreakpointLg ? 340 : isBreakpointMd ? 300 : 180}
-            />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Paper
+                elevation={0}
+                sx={{ p: 1.2, bgcolor: "rgba(255, 255, 255, 0.1)", borderRadius: "50%" }}
+              >
+                <Image
+                  src={logoPSB}
+                  alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
+                  width={isBreakpointLg ? 60 : isBreakpointMd ? 40 : 20}
+                />
+              </Paper>
 
-            <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+              <NeonText variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
+                Patricia Siqueira
+              </NeonText>
+            </Stack>
+
+            <Typography variant={isBreakpointLg ? "h3" : "h4"} fontFamily="Ephesis" color="pink">
               Contrato
-            </NeonText>
+            </Typography>
 
             <OptionsMenu />
           </Stack>
