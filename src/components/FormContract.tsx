@@ -43,7 +43,7 @@ export interface FormData {
 export const initialFormState: FormData = {
   nomeCliente: "",
   dadosContratada:
-    "Patricia Edwiges Alves de Siqueira, confeiteira, representante da Patrícia Siqueira Bolos, localizada na rua Desembargador Izidro, 126 702 B - Tijuca - RJ , inscrita no CPF : 02900486726",
+    "Patricia Edwiges Alves de Siqueira, confeiteira, representante da Patrícia Siqueira Bolos, localizada na rua Desembargador Izidro, 126 702 B - Tijuca - RJ , inscrita no CNPJ 29.384.426/0001-78",
   qtdFatias: "",
   massaBolo: "",
   recheio1: "",
