@@ -17,6 +17,8 @@ import { BatterOptions, FillingOptions, formSkeleton } from "@/data/formSkeleton
 import { NeonText } from "./NeonText";
 import { getCookie, setCookie, hasCookie } from "cookies-next";
 
+import { companyData } from "@/data/companyData";
+
 export interface FormData {
   nomeCliente: string;
   dadosContratada: string;
@@ -42,8 +44,7 @@ export interface FormData {
 
 export const initialFormState: FormData = {
   nomeCliente: "",
-  dadosContratada:
-    "Patricia Edwiges Alves de Siqueira, confeiteira, representante da Patrícia Siqueira Bolos, localizada na rua Desembargador Izidro, 126 702 B - Tijuca - RJ , inscrita no CNPJ 29.384.426/0001-78",
+  dadosContratada: `${companyData.representativeName}, ${companyData.representativeRole}, representante da ${companyData.name}, localizada na ${companyData.address} , inscrita no ${companyData.companyIdType}: ${companyData.companyIdNumber}`,
   qtdFatias: "",
   massaBolo: "",
   recheio1: "",

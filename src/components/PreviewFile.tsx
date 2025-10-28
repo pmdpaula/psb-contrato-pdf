@@ -15,6 +15,8 @@ interface FieldProps extends TypographyProps {
   value: string;
 }
 
+import { companyData } from "@/data/companyData";
+
 // const dados = {
 //   nomeCliente: "Carol Canadá, Halifax - CEP 98798790, Rua da ladeira, 159",
 //   dadosContratada:
@@ -112,6 +114,18 @@ const PreviewFile = () => {
           </Stack>
 
           <Field title="Forma de pagamento:" value={data.formaPagamentoBolo} />
+
+          <Stack direction="row" my={1} spacing={4} justifyContent="space-between">
+            <Field
+              title="Dados bancários:"
+              value={`${companyData.bankData.bankName} (${companyData.bankData.bankNumber}), ag. ${companyData.bankData.agency}, cc. ${companyData.bankData.account}.`}
+            />
+
+            <Field
+              title="Pix:"
+              value={`${companyData.bankData.pixType} ${companyData.bankData.pix}`}
+            />
+          </Stack>
 
           <Title>3. Obrigações da Contratante</Title>
 

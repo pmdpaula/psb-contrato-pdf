@@ -2,6 +2,8 @@ import type { FormData } from "@/components/FormContract";
 import bannerPSB from "@/assets/psb-banner.png";
 import type { TextOptionsLight } from "jspdf";
 
+import { companyData } from "@/data/companyData";
+
 interface AddMultilineTextProps {
   text: string;
   x: number;
@@ -85,7 +87,7 @@ export const generatePdfAsModel = async (formData: FormData) => {
   };
 
   // Helper function para adicionar texto com quebra de linha
-  const addMultilineText = ({
+  function addMultilineText({
     text,
     x,
     y,
@@ -94,7 +96,7 @@ export const generatePdfAsModel = async (formData: FormData) => {
     tab = 0,
     color = "black",
     options,
-  }: AddMultilineTextProps) => {
+  }: AddMultilineTextProps) {
     doc.setFontSize(fontSize);
     // doc.setFont("roboto", isBold ? "bold" : "normal");
     isBold ? doc.setFont("Roboto-Bold", "bold") : doc.setFont("Roboto-Regular", "normal");
@@ -106,9 +108,9 @@ export const generatePdfAsModel = async (formData: FormData) => {
       doc.text(line, leftMargin, y + index * (fontSize * 0.5), options);
     });
     return y + lines.length * (fontSize * 0.5) + 2;
-  };
+  }
 
-  const addInlineText = ({ label, shift = true, x = margin, multi }: AddInlineTextProps) => {
+  function addInlineText({ label, shift = true, x = margin, multi }: AddInlineTextProps) {
     doc.setFontSize(12);
     doc.setFont("Roboto-Regular", "normal");
     doc.setTextColor("black");
@@ -116,7 +118,7 @@ export const generatePdfAsModel = async (formData: FormData) => {
     shift && (yPosition = addMultilineText(multi));
     !shift && addMultilineText(multi);
     // yPosition += 2;
-  };
+  }
 
   // Cabeçalho
   addHeader();
@@ -216,11 +218,16 @@ export const generatePdfAsModel = async (formData: FormData) => {
   });
   yPosition += 1;
 
+  const fillingText =
+    formData.recheio3.length > 0
+      ? `${formData.recheio1}, ${formData.recheio2} e ${formData.recheio3}`
+      : `${formData.recheio1} e ${formData.recheio2}`;
+
   addInlineText({
     label: "Recheios:",
     shift: true,
     multi: {
-      text: `${formData.recheio1}, ${formData.recheio2} e ${formData.recheio3}`,
+      text: fillingText,
       x: margin,
       y: yPosition,
       fontSize: 12,
@@ -313,6 +320,34 @@ export const generatePdfAsModel = async (formData: FormData) => {
       color: colors.azulMedio,
     },
   });
+  yPosition += 1;
+
+  addInlineText({
+    label: "Dados bancários:",
+    shift: false,
+    multi: {
+      text: `${companyData.bankData.bankName} (${companyData.bankData.bankNumber}), ag. ${companyData.bankData.agency}, cc. ${companyData.bankData.account}`,
+      x: margin,
+      y: yPosition,
+      fontSize: 12,
+      tab: 36,
+      color: colors.azulMedio,
+    },
+  });
+  addInlineText({
+    label: "PIX:",
+    shift: true,
+    x: 130,
+    multi: {
+      text: `${companyData.bankData.pixType} - ${companyData.bankData.pix}`,
+      x: margin + 130,
+      y: yPosition,
+      fontSize: 12,
+      tab: 6,
+      color: colors.azulMedio,
+    },
+  });
+
   yPosition += 3;
 
   // 3. Obrigações da Contratante
@@ -414,7 +449,7 @@ export const generatePdfAsModel = async (formData: FormData) => {
       x: margin + 100,
       y: yPosition,
       fontSize: 12,
-      tab: 42,
+      tab: 43,
       color: colors.azulMedio,
     },
   });
