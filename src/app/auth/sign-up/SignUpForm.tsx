@@ -11,15 +11,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 // import { useRouter } from "next/navigation";
-import googleIcon from "@/assets/google-logo-color.svg";
 import { useFormState } from "@/hook/use-form-state";
 
-import { signInWithGoogle } from "../actions";
 import { signUpAction } from "./actions";
 
 export const SignUpForm = () => {
@@ -168,7 +165,7 @@ export const SignUpForm = () => {
         </Box>
       </form>
 
-      <form
+      {/* <form
         action={signInWithGoogle}
         style={{ marginTop: 16 }}
       >
@@ -185,7 +182,7 @@ export const SignUpForm = () => {
           />
           <span style={{ marginLeft: 8 }}>Cadastrar com Google</span>
         </Button>
-      </form>
+      </form> */}
     </>
   );
 };
