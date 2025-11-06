@@ -1,8 +1,9 @@
-import type { FormData } from "@/components/FormContract";
-import bannerPSB from "@/assets/psb-banner.png";
 import type { TextOptionsLight } from "jspdf";
 
+import bannerPSB from "@/assets/psb-banner.png";
 import { companyData } from "@/data/companyData";
+
+import { FormData } from "./components/FormContract";
 
 interface AddMultilineTextProps {
   text: string;
@@ -60,7 +61,14 @@ export const generatePdfAsModel = async (formData: FormData) => {
     const bannerWidth = 120;
     const bannerHeight = bannerWidth * 0.258;
 
-    doc.addImage(bannerPSB.src, "PNG", margin, yPosition, bannerWidth, bannerHeight);
+    doc.addImage(
+      bannerPSB.src,
+      "PNG",
+      margin,
+      yPosition,
+      bannerWidth,
+      bannerHeight,
+    );
     yPosition += 32;
   };
 
@@ -81,7 +89,11 @@ export const generatePdfAsModel = async (formData: FormData) => {
   }
 
   // Helper function para quebrar texto em linhas
-  const splitTextToLines = (text: string, maxWidth: number, fontSize: number = 12) => {
+  const splitTextToLines = (
+    text: string,
+    maxWidth: number,
+    fontSize: number = 12,
+  ) => {
     doc.setFontSize(fontSize);
     return doc.splitTextToSize(text, maxWidth);
   };
@@ -99,7 +111,9 @@ export const generatePdfAsModel = async (formData: FormData) => {
   }: AddMultilineTextProps) {
     doc.setFontSize(fontSize);
     // doc.setFont("roboto", isBold ? "bold" : "normal");
-    isBold ? doc.setFont("Roboto-Bold", "bold") : doc.setFont("Roboto-Regular", "normal");
+    isBold
+      ? doc.setFont("Roboto-Bold", "bold")
+      : doc.setFont("Roboto-Regular", "normal");
     const leftMargin = x + tab;
     const width = options?.maxWidth ? options.maxWidth : contentWidth;
     const lines = splitTextToLines(text, width, fontSize);
@@ -110,7 +124,12 @@ export const generatePdfAsModel = async (formData: FormData) => {
     return y + lines.length * (fontSize * 0.5) + 2;
   }
 
-  function addInlineText({ label, shift = true, x = margin, multi }: AddInlineTextProps) {
+  function addInlineText({
+    label,
+    shift = true,
+    x = margin,
+    multi,
+  }: AddInlineTextProps) {
     doc.setFontSize(12);
     doc.setFont("Roboto-Regular", "normal");
     doc.setTextColor("black");

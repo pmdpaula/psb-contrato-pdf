@@ -1,24 +1,22 @@
 "use client";
 
-import { useState } from "react";
-
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import { useMediaQuery, useTheme } from "@mui/material";
-
+import FiberNewIcon from "@mui/icons-material/FiberNew";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import PreviewIcon from "@mui/icons-material/Preview";
-import FiberNewIcon from "@mui/icons-material/FiberNew";
+import { useMediaQuery, useTheme } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Stack from "@mui/material/Stack";
+import { deleteCookie, getCookie, hasCookie } from "cookies-next";
+import { useState } from "react";
 
-import FullScreenDialog from "./FullScreenDialog";
+import { generatePdfAsModel } from "@/app/(contract)/form-contract/actions";
 
-import { getCookie, deleteCookie, hasCookie } from "cookies-next";
-import { generatePdfAsModel } from "@/app/actions";
+import FullScreenDialog from "../app/(contract)/form-contract/components/FullScreenDialog";
 
 export const OptionsMenu = () => {
   const theme = useTheme();
@@ -85,16 +83,28 @@ export const OptionsMenu = () => {
             anchorEl={anchorEl}
           >
             <MenuList autoFocusItem={open}>
-              <MenuItem onClick={handleGeneratePdf} disabled={!isFormDataAvailable}>
-                <PictureAsPdfIcon fontSize="small" sx={{ mr: 1.5 }} />
+              <MenuItem
+                onClick={handleGeneratePdf}
+                disabled={!isFormDataAvailable}
+              >
+                <PictureAsPdfIcon
+                  fontSize="small"
+                  sx={{ mr: 1.5 }}
+                />
                 Gerar PDF
               </MenuItem>
               <MenuItem onClick={togglePreview}>
-                <PreviewIcon fontSize="small" sx={{ mr: 1.5 }} />
+                <PreviewIcon
+                  fontSize="small"
+                  sx={{ mr: 1.5 }}
+                />
                 Rascunho
               </MenuItem>
               <MenuItem onClick={clearForm}>
-                <FiberNewIcon fontSize="small" sx={{ mr: 1.5 }} />
+                <FiberNewIcon
+                  fontSize="small"
+                  sx={{ mr: 1.5 }}
+                />
                 Limpar Formulário
               </MenuItem>
             </MenuList>
@@ -103,14 +113,34 @@ export const OptionsMenu = () => {
       )}
 
       {(isBreakpointMd || isBreakpointLg) && (
-        <Stack direction="row" justifyContent="right" spacing={2}>
-          <Button type="button" onClick={togglePreview} variant="outlined" size="small">
-            <PreviewIcon fontSize="small" sx={{ mr: 1.5 }} />
+        <Stack
+          direction="row"
+          justifyContent="right"
+          spacing={2}
+        >
+          <Button
+            type="button"
+            onClick={togglePreview}
+            variant="outlined"
+            size="small"
+          >
+            <PreviewIcon
+              fontSize="small"
+              sx={{ mr: 1.5 }}
+            />
             Rascunho
           </Button>
 
-          <Button type="button" onClick={clearForm} variant="outlined" size="small">
-            <FiberNewIcon fontSize="small" sx={{ mr: 1.5 }} />
+          <Button
+            type="button"
+            onClick={clearForm}
+            variant="outlined"
+            size="small"
+          >
+            <FiberNewIcon
+              fontSize="small"
+              sx={{ mr: 1.5 }}
+            />
             Limpar Formulário
           </Button>
 
@@ -121,13 +151,19 @@ export const OptionsMenu = () => {
             size="small"
             onClick={handleGeneratePdf}
           >
-            <PictureAsPdfIcon fontSize="small" sx={{ mr: 1.5 }} />
+            <PictureAsPdfIcon
+              fontSize="small"
+              sx={{ mr: 1.5 }}
+            />
             Gerar PDF
           </Button>
         </Stack>
       )}
 
-      <FullScreenDialog isOpened={openPreview} onClose={togglePreview} />
+      <FullScreenDialog
+        isOpened={openPreview}
+        onClose={togglePreview}
+      />
     </>
   );
 };

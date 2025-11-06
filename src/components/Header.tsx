@@ -1,17 +1,31 @@
 "use client";
 
-import { NeonText } from "./NeonText";
-import { OptionsMenu } from "./OptionsMenu";
-import { Paper, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Image from "next/image";
-import logoPSB from "@/assets/psb-logo_bgdark.svg";
 import Stack from "@mui/material/Stack";
+import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { z } from "zod";
 
-export const Header = () => {
+import { OptionsMenu } from "@/components/OptionsMenu";
+
+import AccountMenu from "./AccountMenu";
+import { MainLogo } from "./MainLogo";
+
+export const headerSchema = z.object({
+  variant: z.enum(["common", "contract"]).nullable().optional(),
+  title: z.string().min(1).max(20).nullable().optional(),
+});
+
+type HeaderProps = z.infer<typeof headerSchema>;
+
+// interface HeaderProps {
+//   variant?: "common" | "contract";
+//   title: string;
+// }
+
+export const Header = ({ variant = "common", title = "" }: HeaderProps) => {
   const theme = useTheme();
   const isBreakpointSm = useMediaQuery(theme.breakpoints.up("sm"));
   const isBreakpointMd = useMediaQuery(theme.breakpoints.up("md"));
@@ -19,7 +33,10 @@ export const Header = () => {
 
   return (
     <header>
-      <Box width="100%" mb={isBreakpointLg ? 13 : isBreakpointMd ? 12 : isBreakpointSm ? 10 : 8}>
+      <Box
+        width="100%"
+        mb={isBreakpointLg ? 13 : isBreakpointMd ? 12 : isBreakpointSm ? 10 : 8}
+      >
         <AppBar
           position="fixed"
           sx={{
@@ -28,29 +45,32 @@ export const Header = () => {
             backgroundColor: "rgba(176, 109, 149, 0.2)",
           }}
         >
-          <Stack direction="row" alignItems="center" justifyContent="space-around" spacing={2}>
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Paper
-                elevation={0}
-                sx={{ p: 1.2, bgcolor: "rgba(255, 255, 255, 0.1)", borderRadius: "50%" }}
-              >
-                <Image
-                  src={logoPSB}
-                  alt="logotipo com um bolo estilizado rosa e marrom a esquerda e a direita o nome Patricia Siqueira"
-                  width={isBreakpointLg ? 50 : isBreakpointMd ? 25 : 15}
-                />
-              </Paper>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <MainLogo />
 
-              <NeonText variant={isBreakpointLg ? "h3" : "h5"} fontFamily="Ephesis" color="pink">
-                Patricia Siqueira
-              </NeonText>
-            </Stack>
-
-            <Typography variant={isBreakpointLg ? "h3" : "h5"} color="pink">
-              Contrato
+            <Typography
+              variant={isBreakpointLg ? "h3" : "h5"}
+              color="pink"
+            >
+              {title}
             </Typography>
 
-            <OptionsMenu />
+            {variant === "contract" && (
+              // <Stack
+              //   direction="row"
+              //   alignItems="center"
+              //   justifyContent="end"
+              //   spacing={0.5}
+              // >
+              <OptionsMenu />
+              // </Stack>
+            )}
+
+            <AccountMenu />
           </Stack>
         </AppBar>
       </Box>
