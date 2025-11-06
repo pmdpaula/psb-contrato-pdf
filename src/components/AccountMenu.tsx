@@ -58,7 +58,7 @@ export default function AccountMenu() {
             <Avatar
               sx={{ width: 32, height: 32 }}
               alt={user?.name}
-              src={user?.avatarUrl}
+              src={user?.avatarUrl || undefined}
             />
           </IconButton>
         </Tooltip>
