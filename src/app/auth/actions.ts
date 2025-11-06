@@ -20,12 +20,12 @@ export const signInWithGoogle = async () => {
     "https://google.com",
   );
 
-  googleSignInUrl.searchParams.set("client_id", env.GOOGLE_OAUTH_CLIENT_ID);
-  googleSignInUrl.searchParams.set(
-    "redirect_uri",
-    env.GOOGLE_OAUTH_REDIRECT_URI,
-  );
-  googleSignInUrl.searchParams.set("scope", "user");
+  // googleSignInUrl.searchParams.set("client_id", env.GOOGLE_OAUTH_CLIENT_ID);
+  // googleSignInUrl.searchParams.set(
+  //   "redirect_uri",
+  //   env.GOOGLE_OAUTH_REDIRECT_URI,
+  // );
+  // googleSignInUrl.searchParams.set("scope", "user");
 
   redirect(googleSignInUrl.toString());
 };
