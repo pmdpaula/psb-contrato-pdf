@@ -1,7 +1,7 @@
+import { Box, Container, Paper } from "@mui/material";
 import { redirect } from "next/navigation";
 
 import { isAuthenticated } from "@/auth/auth";
-import { Box, Container, Paper } from "@mui/material";
 
 export default async function AuthLayout({
   children,

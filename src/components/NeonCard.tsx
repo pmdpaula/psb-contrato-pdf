@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, styled, type BoxProps } from "@mui/material";
+import { Box, type BoxProps, styled } from "@mui/material";
 
 interface NeonCardProps extends React.HTMLAttributes<BoxProps> {
   children?: React.ReactNode;
@@ -48,7 +48,8 @@ const StyledBox = styled(Box)({
       boxShadow: "0 0 20px rgba(255, 0, 128, 0.5)",
     },
     "100%": {
-      boxShadow: "0 0 20px rgba(255, 0, 128, 0.8), 0 0 35px rgba(255, 140, 0, 0.4)",
+      boxShadow:
+        "0 0 20px rgba(255, 0, 128, 0.8), 0 0 35px rgba(255, 140, 0, 0.4)",
     },
   },
   "@keyframes neonPulse2": {
@@ -56,7 +57,8 @@ const StyledBox = styled(Box)({
       boxShadow: "0 0 20px rgba(9, 78, 30, 0.5)",
     },
     "100%": {
-      boxShadow: "0 0 20px rgba(9, 78, 30, 0.8), 0 0 35px rgba(30, 0, 255, 0.4)",
+      boxShadow:
+        "0 0 20px rgba(9, 78, 30, 0.8), 0 0 35px rgba(30, 0, 255, 0.4)",
     },
   },
 });
