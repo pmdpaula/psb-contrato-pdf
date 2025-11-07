@@ -1,4 +1,5 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -39,7 +40,6 @@ export const FormUser = () => {
     control,
     handleSubmit,
     watch,
-    trigger,
     formState: { errors, isLoading, isValid, isDirty },
   } = useForm<UserDto>({
     defaultValues: async () => {
@@ -64,7 +64,6 @@ export const FormUser = () => {
 
   const onSubmit: SubmitHandler<UserDto> = async (data) => {
     const submitResponse = await editUserAction(data);
-    console.log("🚀 ~ onSubmit ~ submitResponse:", submitResponse);
     setOpenAlert({
       isOpen: true,
       success: submitResponse.success,
@@ -269,7 +268,6 @@ export const FormUser = () => {
                       row
                       aria-labelledby="user-role"
                       {...field}
-                      onBlur={() => trigger("userRole")}
                       color={errors.userRole ? "error" : "secondary"}
                     >
                       {userRolesOptions.map((role) => (
