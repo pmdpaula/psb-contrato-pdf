@@ -2,8 +2,6 @@
 
 import { redirect } from "next/navigation";
 
-import { env } from "@/env";
-
 // export const signInWithGithub = async () => {
 //   const githubSignInUrl = new URL("login/oauth/authorize", "https://github.com");
 
