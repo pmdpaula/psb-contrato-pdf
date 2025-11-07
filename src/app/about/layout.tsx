@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import { isAuthenticated } from "@/auth/auth";
 import { Header } from "@/components/Header";
-import { getProfile } from "@/http/get-profile";
 
 export default async function RootLayout({
   children,
@@ -14,15 +13,9 @@ export default async function RootLayout({
     redirect("/auth/sign-in");
   }
 
-  const { user } = await getProfile();
-
-  if (user.userRole !== "ADMIN") {
-    redirect("/about");
-  }
-
   return (
     <main>
-      <Header variant="contract" />
+      <Header variant="common" />
 
       <Container
         maxWidth="md"
