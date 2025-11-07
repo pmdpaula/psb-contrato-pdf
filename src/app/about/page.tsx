@@ -3,9 +3,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import { Box, Button, Stack, Typography } from "@mui/material";
 
-import { NeonCircle } from "@/components/NeonCircle";
 import { NeonText } from "@/components/NeonText";
-import { PSBIconLight } from "@/components/PSBIcon";
 
 const AboutPage = () => {
   return (
