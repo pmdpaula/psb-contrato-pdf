@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 
+import { ChangePasswordForm } from "./ChangePasswordForm";
 import { UserProfile } from "./UserProfile";
 
 const UserProfilePage = () => {
@@ -16,6 +17,8 @@ const UserProfilePage = () => {
       >
         Editar Perfil
       </Button>
+
+      <ChangePasswordForm />
     </>
   );
 };

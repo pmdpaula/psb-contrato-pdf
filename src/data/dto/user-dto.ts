@@ -43,3 +43,15 @@ export const userDtoSchema = z.object({
 });
 
 export type UserDto = z.infer<typeof userDtoSchema>;
+
+export const changeUserPasswordSchema = z.object({
+  id: z.cuid2(),
+  currentPassword: z
+    .string("A senha atual é obrigatória.")
+    .min(6, "A senha atual deve ter pelo menos 6 caracteres."),
+  newPassword: z
+    .string("A nova senha é obrigatória.")
+    .min(6, "A nova senha deve ter pelo menos 6 caracteres."),
+});
+
+export type ChangePasswordProps = z.infer<typeof changeUserPasswordSchema>;

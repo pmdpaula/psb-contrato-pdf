@@ -1,6 +1,6 @@
 "use client";
 
-import { List, ListItem, Typography } from "@mui/material";
+import { Box, List, ListItem, Skeleton, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -10,7 +10,6 @@ export const UserProfile = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["user-profile"],
     queryFn: async () => await getProfile(),
-    // enabled: !!orgSlug,
   });
 
   const user = data?.user;
@@ -18,43 +17,52 @@ export const UserProfile = () => {
   return (
     <>
       {!isLoading && user && (
-        <List dense>
-          <ListItem>
-            <Typography color="white">Nome: {user.name}</Typography>
-          </ListItem>
-
-          <ListItem>
-            <Typography color="white">E-mail: {user.email}</Typography>
-          </ListItem>
-
-          {user.avatarUrl && (
+        <Box height={160}>
+          <List dense>
             <ListItem>
-              <Image
-                color="white"
-                src={user.avatarUrl}
-                alt="User Avatar"
-                width={40}
-                height={40}
-              />
+              <Typography color="white">Nome: {user.name}</Typography>
             </ListItem>
-          )}
 
-          <ListItem>
-            <Typography color="white">
-              Telefone 1: {user.phoneNumber1}
-            </Typography>
-          </ListItem>
+            <ListItem>
+              <Typography color="white">E-mail: {user.email}</Typography>
+            </ListItem>
 
-          <ListItem>
-            <Typography color="white">
-              Telefone 2: {user.phoneNumber2}
-            </Typography>
-          </ListItem>
+            {user.avatarUrl && (
+              <ListItem>
+                <Image
+                  color="white"
+                  src={user.avatarUrl}
+                  alt="User Avatar"
+                  width={40}
+                  height={40}
+                />
+              </ListItem>
+            )}
 
-          <ListItem>
-            <Typography color="white">Perfil: {user.userRole}</Typography>
-          </ListItem>
-        </List>
+            <ListItem>
+              <Typography color="white">
+                Telefone 1: {user.phoneNumber1}
+              </Typography>
+            </ListItem>
+
+            <ListItem>
+              <Typography color="white">
+                Telefone 2: {user.phoneNumber2}
+              </Typography>
+            </ListItem>
+
+            <ListItem>
+              <Typography color="white">Perfil: {user.userRole}</Typography>
+            </ListItem>
+          </List>
+        </Box>
+      )}
+
+      {isLoading && (
+        <Skeleton
+          animation="wave"
+          height={160}
+        />
       )}
     </>
   );
