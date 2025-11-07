@@ -8,8 +8,9 @@ export const env = createEnv({
     // DATABASE_URL: z.url(),
     // DATABASE_API_KEY: z.string().min(64).optional(),
 
-    JWT_SECRET: z.string().min(32),
+    // JWT_SECRET: z.string().min(32),
     JWT_EXPIRES_IN: z.string().default("15m"),
+    JWT_PRIVATE_KEY: z.string().min(64),
 
     REFRESH_TOKEN_SECRET: z.string().min(32),
     REFRESH_TOKEN_EXPIRES_IN: z.string().default("7d"),
@@ -29,7 +30,8 @@ export const env = createEnv({
     // DATABASE_API_KEY: process.env.DATABASE_API_KEY,
     // DATABASE_URL: process.env.DATABASE_URL,
 
-    JWT_SECRET: process.env.JWT_SECRET,
+    // JWT_SECRET: process.env.JWT_SECRET,
+    JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY,
     JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
 
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
