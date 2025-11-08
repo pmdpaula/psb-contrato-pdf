@@ -44,6 +44,8 @@ export const userDtoSchema = z.object({
 
 export type UserDto = z.infer<typeof userDtoSchema>;
 
+// Change Password Schema and Type
+
 export const changeUserPasswordSchema = z.object({
   id: z.cuid2(),
   currentPassword: z
@@ -55,3 +57,13 @@ export const changeUserPasswordSchema = z.object({
 });
 
 export type ChangePasswordProps = z.infer<typeof changeUserPasswordSchema>;
+// Sign in Schema and Type
+
+export const signInSchema = z.object({
+  email: z.email({ message: "Por favor, entre com um e-mail válido." }),
+  password: z
+    .string()
+    .min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
+});
+
+export type SignInFormData = z.infer<typeof signInSchema>;

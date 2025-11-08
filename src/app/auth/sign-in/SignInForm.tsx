@@ -1,105 +1,125 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import LoginIcon from "@mui/icons-material/Login";
 import {
-  Alert,
-  AlertTitle,
   Box,
   Button,
   CircularProgress,
-  Snackbar,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  OutlinedInput,
   Stack,
-  TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
-import { useFormState } from "@/hook/use-form-state";
+import { type SignInFormData, signInSchema } from "@/data/dto/user-dto";
 
 import { signInWithEmailAndPassword } from "./actions";
 
 export const SignInForm = () => {
-  const theme = useTheme();
-  // const isBreakpointSm = useMediaQuery(theme.breakpoints.up("sm"));
-  // const isBreakpointMd = useMediaQuery(theme.breakpoints.up("md"));
-  // const isBreakpointLg = useMediaQuery(theme.breakpoints.up("lg"));
-  const router = useRouter();
-  // const searchParams = useSearchParams();
-
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
-    signInWithEmailAndPassword,
-    () => {
-      router.push("/");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isLoading, isValid, isDirty },
+  } = useForm<SignInFormData>({
+    defaultValues: {
+      email: "",
+      password: "",
     },
-  );
+    resolver: zodResolver(signInSchema),
+    mode: "all", // Valida onChange + onBlur
+  });
+
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
+    await signInWithEmailAndPassword(data);
+  };
 
   return (
     <>
-      {success === false && message && (
-        <Snackbar
-          open={success === false && message.length > 0}
-          autoHideDuration={5000}
-          // onClose={handleClose}
-        >
-          <Alert
-            severity="error"
-            variant="outlined"
-          >
-            <AlertTitle>Erro no login</AlertTitle>
-            <Typography>{message}</Typography>
-          </Alert>
-        </Snackbar>
-      )}
-
-      <Stack
-        spacing={4}
-        mb={2}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <form
-          onSubmit={handleSubmit}
-          style={{ width: "100%" }}
-        >
-          <Box mb={3}>
-            <Box mb={3}>
-              <TextField
-                id="email"
-                name="email"
-                label="E-mail"
-                variant="outlined"
-                fullWidth
-              />
-
-              <Box height={6}>
-                <Typography
-                  variant="caption"
-                  color="error"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2}>
+          <Box>
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <FormControl
+                  fullWidth
+                  error={errors.email ? true : false}
+                  color={errors.email ? "error" : "secondary"}
                 >
-                  {errors && errors.email && errors.email.errors[0]}
-                </Typography>
-              </Box>
-            </Box>
+                  <InputLabel htmlFor="email">E-mail</InputLabel>
+                  <OutlinedInput
+                    id="email"
+                    label="E-mail"
+                    {...field}
+                    value={field.value || ""}
+                    sx={{
+                      boxShadow: errors.email
+                        ? "0px 0px 12px 2px rgba(255,0,0,0.5)"
+                        : "",
+                    }}
+                  />
+
+                  <FormHelperText
+                    component="p"
+                    sx={{
+                      display: "flex",
+                      textAlign: "end",
+                      alignSelf: "end",
+                      height: 6,
+                    }}
+                  >
+                    {errors.email?.message}
+                  </FormHelperText>
+                </FormControl>
+              )}
+            />
 
             <Stack mb={3}>
-              <TextField
-                id="password"
+              <Controller
                 name="password"
-                label="Password"
-                variant="outlined"
-                type="password"
-                fullWidth
-              />
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <FormControl
+                    fullWidth
+                    error={errors.password ? true : false}
+                    color={errors.password ? "error" : "secondary"}
+                  >
+                    <InputLabel htmlFor="password">E-mail</InputLabel>
+                    <OutlinedInput
+                      id="password"
+                      label="E-mail"
+                      type="password"
+                      {...field}
+                      value={field.value || ""}
+                      sx={{
+                        boxShadow: errors.password
+                          ? "0px 0px 12px 2px rgba(255,0,0,0.5)"
+                          : "",
+                      }}
+                    />
 
-              <Box height={6}>
-                <Typography
-                  variant="caption"
-                  color="error"
-                >
-                  {errors && errors.password && errors.password.errors[0]}
-                </Typography>
-              </Box>
+                    <FormHelperText
+                      component="p"
+                      sx={{
+                        display: "flex",
+                        textAlign: "end",
+                        alignSelf: "end",
+                        height: 6,
+                      }}
+                    >
+                      {errors.password?.message}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
 
               <Link
                 href="/auth/forgot-password"
@@ -115,47 +135,54 @@ export const SignInForm = () => {
             </Stack>
 
             <Button
-              variant="contained"
               type="submit"
-              disabled={isPending}
+              variant="contained"
+              color="secondary"
               fullWidth
-              sx={{ height: 36 }}
+              size="large"
+              sx={{ mt: 2, height: 42 }}
+              disabled={isLoading || !isDirty || !isValid}
             >
-              {isPending ? (
+              {isLoading ? (
                 <CircularProgress
                   enableTrackSlot
-                  size={22}
+                  size={24}
+                  color="warning"
                 />
               ) : (
-                "Acessar"
+                <Stack
+                  direction="row"
+                  alignItems="start"
+                  justifyContent="center"
+                >
+                  <LoginIcon sx={{ mr: 1 }} /> Acessar
+                </Stack>
               )}
             </Button>
           </Box>
 
-          <Box
-            textAlign="center"
-            mb={2}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
           >
-            <Typography color="GrayText">
-              Não tem conta?{" "}
-              <Link
-                href="/auth/sign-up"
-                style={{ color: theme.palette.primary.main, marginLeft: 3 }}
-              >
-                Criar conta
-              </Link>
-            </Typography>
-          </Box>
-        </form>
+            <Typography color="GrayText">Não tem conta?</Typography>
 
-        {/* <SignInGoogle /> */}
-        {/* <form action={signInWithGoogle}>
+            <Typography color="primary">
+              <Link href="/auth/sign-up">Criar conta</Link>
+            </Typography>
+          </Stack>
+        </Stack>
+      </form>
+
+      {/* <SignInGoogle /> */}
+      {/* <form action={signInWithGoogle}>
           <Button type="submit" variant="outlined" className="w-full">
             <Image src={googleIcon} alt="Google" height={24} />
             <span style={{ marginLeft: 8 }}>Acessar com Google</span>
           </Button>
         </form> */}
-      </Stack>
     </>
   );
 };

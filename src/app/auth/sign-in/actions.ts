@@ -3,30 +3,12 @@
 import { HTTPError } from "ky";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 
-// import { acceptInvite } from "@/http/accept-invite";
+import { type SignInFormData } from "@/data/dto/user-dto";
 import { signInWithPassword } from "@/http/sign-in-with-password";
 
-const signInSchema = z.object({
-  email: z.email({ message: "Por favor, entre com um e-mail válido." }),
-  password: z.string().min(1, { message: "A senha é obrigatória." }),
-});
-
-export async function signInWithEmailAndPassword(data: FormData) {
-  const formParse = signInSchema.safeParse(Object.fromEntries(data));
-
-  if (!formParse.success) {
-    const { properties } = z.treeifyError(formParse.error);
-
-    return {
-      success: false,
-      message: null,
-      errors: properties && properties,
-    };
-  }
-
-  const { email, password } = formParse.data;
+export async function signInWithEmailAndPassword(data: SignInFormData) {
+  const { email, password } = data;
 
   try {
     const { access_token } = await signInWithPassword({
