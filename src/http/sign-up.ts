@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 import { apiClient } from "./api-client";
 
 interface SignUpRequest {
@@ -15,5 +13,5 @@ export async function signUp({ name, email, password }: SignUpRequest) {
     json: { name, email, password },
   });
 
-  redirect("/auth/sign-in");
+  // redirect("/auth/sign-in");
 }

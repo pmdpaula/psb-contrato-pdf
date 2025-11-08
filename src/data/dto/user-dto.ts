@@ -57,6 +57,30 @@ export const changeUserPasswordSchema = z.object({
 });
 
 export type ChangePasswordProps = z.infer<typeof changeUserPasswordSchema>;
+
+// Sign Up Schema and Type
+
+export const signUpSchema = z
+  .object({
+    name: z
+      .string()
+      .refine((value) => value.split(" ").length > 1, {
+        message: "Por favor, entre com o nome completo.",
+      })
+      .min(1, { message: "Nome é obrigatório." }),
+    email: z.email({ message: "Por favor, entre com um e-mail válido." }),
+    password: z
+      .string()
+      .min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "As senhas não coincidem.",
+    path: ["password_confirmation"],
+  });
+
+export type SignUpFormData = z.infer<typeof signUpSchema>;
+
 // Sign in Schema and Type
 
 export const signInSchema = z.object({
