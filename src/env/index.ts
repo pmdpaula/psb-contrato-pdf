@@ -20,8 +20,8 @@ export const env = createEnv({
   client: {},
   shared: {
     NEXT_PUBLIC_API_URL: z.url(),
-    NEXT_PUBLIC_STACK_PROJECT_ID: z.string(),
-    NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string(),
+    // NEXT_PUBLIC_STACK_PROJECT_ID: z.string(),
+    // NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: z.string(),
   },
   runtimeEnv: {
     // PORT: process.env.PORT,
@@ -42,9 +42,9 @@ export const env = createEnv({
     // STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
 
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
-    NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY:
-      process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
+    // NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
+    // NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY:
+    //   process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
   },
   emptyStringAsUndefined: true,
 });
