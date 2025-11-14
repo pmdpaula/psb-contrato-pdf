@@ -4,7 +4,7 @@ import { Box, List, ListItem, Skeleton, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-import { getProfile } from "@/http/get-profile";
+import { getProfile } from "@/http/user/get-profile";
 
 export const UserProfile = () => {
   const { data, isLoading } = useQuery({

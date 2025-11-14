@@ -3,7 +3,7 @@
 import { HTTPError } from "ky";
 
 import type { ChangePasswordProps } from "@/data/dto/user-dto";
-import { changeUserPassword } from "@/http/change-user-password";
+import { changeUserPassword } from "@/http/auth/change-user-password";
 
 export async function changePasswordAction(data: ChangePasswordProps) {
   const { id, currentPassword, newPassword } = data;

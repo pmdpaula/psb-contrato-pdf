@@ -25,18 +25,19 @@ import {
   type ChangePasswordProps,
   changeUserPasswordSchema,
 } from "@/data/dto/user-dto";
-import { getProfile } from "@/http/get-profile";
+import { getProfile } from "@/http/user/get-profile";
+import type { AlertType } from "@/lib/alert";
 
 import { changePasswordAction } from "./action";
 
 // import { editUserAction } from "./action";
 
-type AlertType = {
-  isOpen: boolean;
-  success: boolean;
-  message: string;
-  errorCode: string | number | null;
-};
+// type AlertType = {
+//   isOpen: boolean;
+//   success: boolean;
+//   message: string;
+//   errorCode: string | number | null;
+// };
 
 export const ChangePasswordForm = () => {
   const {

@@ -36,20 +36,10 @@ export default function RootLayout({
       className={`${roboto.variable} ${ephesis.variable}`}
     >
       <head>
-        {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-          rel="stylesheet"
-        /> */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
-        {/* <meta
-          name="google-signin-client_id"
-          content={`${process.env.GOOGLE_CLIENT_ID}.apps.googleusercontent.com`}
-        /> */}
       </head>
       <body>
         <Providers>{children}</Providers>

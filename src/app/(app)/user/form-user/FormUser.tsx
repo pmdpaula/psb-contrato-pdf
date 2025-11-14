@@ -24,16 +24,17 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import type { UserDto } from "@/data/dto/user-dto";
 import { userDtoSchema } from "@/data/dto/user-dto";
-import { getProfile } from "@/http/get-profile";
+import { getProfile } from "@/http/user/get-profile";
+import type { AlertType } from "@/lib/alert";
 
 import { editUserAction } from "./action";
 
-type AlertType = {
-  isOpen: boolean;
-  success: boolean;
-  message: string;
-  errorCode: string | number | null;
-};
+// type AlertType = {
+//   isOpen: boolean;
+//   success: boolean;
+//   message: string;
+//   errorCode: string | number | null;
+// };
 
 export const FormUser = () => {
   const {

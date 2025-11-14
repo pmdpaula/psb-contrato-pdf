@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { isAuthenticated } from "@/auth/auth";
 import { Header } from "@/components/Header";
-import { getProfile } from "@/http/get-profile";
+import { getProfile } from "@/http/user/get-profile";
 
 export default async function RootLayout({
   children,

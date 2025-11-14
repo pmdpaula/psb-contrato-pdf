@@ -3,7 +3,7 @@
 import { HTTPError } from "ky";
 
 import { type UserDto } from "@/data/dto/user-dto";
-import { editUser } from "@/http/edit-user";
+import { editUser } from "@/http/user/edit-user";
 
 export async function editUserAction(data: UserDto) {
   const { id, name, email, avatarUrl, phoneNumber1, phoneNumber2, userRole } =
