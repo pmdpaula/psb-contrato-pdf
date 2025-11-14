@@ -1,3 +1,5 @@
+"use client";
+
 import { Stack, useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
@@ -6,7 +8,12 @@ import { NeonCircle } from "./NeonCircle";
 import { NeonText } from "./NeonText";
 import { PSBIconLight } from "./PSBIcon";
 
-export const MainLogo = () => {
+interface MainLogoProps {
+  title?: string;
+  size?: number;
+}
+
+export const MainLogo = ({ title, size }: MainLogoProps) => {
   const theme = useTheme();
   const isBreakpointMd = useMediaQuery(theme.breakpoints.up("md"));
   const isBreakpointLg = useMediaQuery(theme.breakpoints.up("lg"));
@@ -19,18 +26,22 @@ export const MainLogo = () => {
       sx={{ flexGrow: 1 }}
     >
       <Link href="/">
-        <NeonCircle diameter={isBreakpointLg ? 60 : isBreakpointMd ? 40 : 30}>
+        <NeonCircle
+          diameter={size || (isBreakpointLg ? 60 : isBreakpointMd ? 40 : 30)}
+        >
           <PSBIconLight amplitude={100} />
         </NeonCircle>
       </Link>
 
-      <NeonText
-        variant={isBreakpointLg ? "h3" : "h5"}
-        fontFamily="Ephesis"
-        color="pink"
-      >
-        Patricia Siqueira
-      </NeonText>
+      {title && (
+        <NeonText
+          variant={isBreakpointLg ? "h3" : "h5"}
+          fontFamily="Ephesis"
+          color="pink"
+        >
+          {title}
+        </NeonText>
+      )}
     </Stack>
   );
 };

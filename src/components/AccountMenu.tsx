@@ -17,7 +17,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
-import { getProfile } from "@/http/get-profile";
+import { getProfile } from "@/http/user/get-profile";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

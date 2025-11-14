@@ -50,7 +50,7 @@ export const Header = ({ variant = "common", title = "" }: HeaderProps) => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <MainLogo />
+            <MainLogo title="Patricia Siqueira" />
 
             <Typography
               variant={isBreakpointLg ? "h3" : "h5"}

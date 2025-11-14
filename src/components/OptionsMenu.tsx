@@ -16,7 +16,7 @@ import { useState } from "react";
 
 import { generatePdfAsModel } from "@/app/(contract)/form-contract/actions";
 
-import FullScreenDialog from "../app/(contract)/form-contract/components/FullScreenDialog";
+import FullScreenDialogContract from "../app/(contract)/form-contract/FullScreenDialogContract";
 
 export const OptionsMenu = () => {
   const theme = useTheme();
@@ -160,7 +160,7 @@ export const OptionsMenu = () => {
         </Stack>
       )}
 
-      <FullScreenDialog
+      <FullScreenDialogContract
         isOpened={openPreview}
         onClose={togglePreview}
       />

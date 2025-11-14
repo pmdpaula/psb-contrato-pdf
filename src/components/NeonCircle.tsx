@@ -25,7 +25,8 @@ const StyledBox = styled(Box)({
     borderRadius: "50%",
     background: "linear-gradient(45deg, #ff0080, #ff8c00)",
     boxShadow: "0 0 20px rgba(255, 0, 128, 0.5)",
-    animation: "neonPulse 2s ease-in-out infinite alternate, rotate 3s linear infinite",
+    animation:
+      "neonPulse 2s ease-in-out infinite alternate, rotate 3s linear infinite",
     zIndex: -1,
   },
   "@keyframes neonPulse": {
@@ -33,7 +34,8 @@ const StyledBox = styled(Box)({
       boxShadow: "0 0 20px rgba(255, 0, 128, 0.5)",
     },
     "100%": {
-      boxShadow: "0 0 20px rgba(255, 0, 128, 0.8), 0 0 35px rgba(255, 140, 0, 0.4)",
+      boxShadow:
+        "0 0 20px rgba(255, 0, 128, 0.8), 0 0 35px rgba(255, 140, 0, 0.4)",
     },
   },
   "@keyframes rotate": {
@@ -48,8 +50,24 @@ const StyledBox = styled(Box)({
 
 export const NeonCircle = ({ diameter = 20, children }: NeonCircleProps) => {
   return (
-    <StyledBox width={diameter} height={diameter} bgcolor="white">
-      {children}
+    <StyledBox
+      width={diameter}
+      height={diameter}
+      // bgcolor="white"
+    >
+      <Box
+        // bgcolor="tomato"
+        width="100%"
+        height="100%"
+        flex={1}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="50%"
+        overflow="hidden"
+      >
+        {children}
+      </Box>
     </StyledBox>
   );
 };

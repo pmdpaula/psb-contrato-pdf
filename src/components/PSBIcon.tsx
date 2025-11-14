@@ -1,3 +1,5 @@
+"use client";
+
 import { createSvgIcon } from "@mui/material";
 
 export const PSBIconLight = createSvgIcon(
@@ -15,7 +17,11 @@ export const PSBIconLight = createSvgIcon(
   >
     <g id="Layer_x0020_1">
       <metadata id="CorelCorpID_0Corel-Layer" />
-      <rect fill="none" width="650.06" height="650.06" />
+      <rect
+        fill="none"
+        width="650.06"
+        height="650.06"
+      />
       <g id="_2296938712752">
         <g>
           <path
@@ -72,7 +78,7 @@ export const PSBIconLight = createSvgIcon(
       </g>
     </g>
   </svg>,
-  "PSB"
+  "PSB",
 );
 
 export const PSBIconDark = createSvgIcon(
@@ -88,7 +94,11 @@ export const PSBIconDark = createSvgIcon(
   >
     <g id="Layer_x0020_1">
       <metadata id="CorelCorpID_0Corel-Layer" />
-      <rect fill="none" width="625.06" height="625.06" />
+      <rect
+        fill="none"
+        width="625.06"
+        height="625.06"
+      />
       <g id="_2296938712752">
         <g>
           <path
@@ -145,5 +155,5 @@ export const PSBIconDark = createSvgIcon(
       </g>
     </g>
   </svg>,
-  "PSB"
+  "PSB",
 );
