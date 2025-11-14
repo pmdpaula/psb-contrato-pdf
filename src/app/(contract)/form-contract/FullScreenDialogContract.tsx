@@ -29,15 +29,15 @@ const Transition = React.forwardRef(function Transition(
   );
 });
 
-interface FullScreenDialogProps {
+interface FullScreenDialogContractProps {
   isOpened: boolean;
   onClose: () => void;
 }
 
-const FullScreenDialog = ({
+const FullScreenDialogContract = ({
   isOpened = false,
   onClose,
-}: FullScreenDialogProps) => {
+}: FullScreenDialogContractProps) => {
   const theme = useTheme();
   // const isBreakpointSm = useMediaQuery(theme.breakpoints.up("sm"));
   const isBreakpointMd = useMediaQuery(theme.breakpoints.up("md"));
@@ -105,4 +105,4 @@ const FullScreenDialog = ({
   );
 };
 
-export default FullScreenDialog;
+export default FullScreenDialogContract;

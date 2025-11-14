@@ -1,4 +1,4 @@
-import FormContract from "./components/FormContract";
+import FormContract from "./FormContract";
 
 const HomePage = () => {
   return (

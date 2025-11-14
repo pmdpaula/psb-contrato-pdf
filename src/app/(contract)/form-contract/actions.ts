@@ -3,7 +3,7 @@ import type { TextOptionsLight } from "jspdf";
 import bannerPSB from "@/assets/psb-banner.png";
 import { companyData } from "@/data/companyData";
 
-import { FormData } from "./components/FormContract";
+import { FormData } from "./FormContract";
 
 interface AddMultilineTextProps {
   text: string;
