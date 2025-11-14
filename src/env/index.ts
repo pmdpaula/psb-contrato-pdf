@@ -14,7 +14,7 @@ export const env = createEnv({
     // GOOGLE_OAUTH_CLIENT_ID: z.string(),
     // GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
     // GOOGLE_OAUTH_REDIRECT_URI: z.url(),
-    STACK_SECRET_SERVER_KEY: z.string(),
+    // STACK_SECRET_SERVER_KEY: z.string(),
   },
   // clientPrefix: "PUBLIC_",
   client: {},
@@ -39,7 +39,7 @@ export const env = createEnv({
     // GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
     // GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
     // GOOGLE_OAUTH_REDIRECT_URI: process.env.GOOGLE_OAUTH_REDIRECT_URI,
-    STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
+    // STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
 
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
