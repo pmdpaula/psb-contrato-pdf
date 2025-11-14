@@ -2,7 +2,7 @@
 
 import type { ChangePasswordProps } from "@/data/dto/user-dto";
 
-import { apiClient } from "./api-client";
+import { apiClient } from "../api-client";
 
 export async function changeUserPassword({
   id,

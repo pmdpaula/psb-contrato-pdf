@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoginIcon from "@mui/icons-material/Login";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -10,15 +11,26 @@ import {
   FormHelperText,
   InputLabel,
   OutlinedInput,
+  Snackbar,
+  type SnackbarCloseReason,
   Stack,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import { useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { type SignInFormData, signInSchema } from "@/data/dto/user-dto";
+import type { AlertType } from "@/lib/alert";
 
 import { signInWithEmailAndPassword } from "./actions";
+
+// type AlertType = {
+//   isOpen: boolean;
+//   success: boolean;
+//   message: string;
+//   errorCode: string | number | null;
+// };
 
 export const SignInForm = () => {
   const {
@@ -34,8 +46,38 @@ export const SignInForm = () => {
     mode: "all", // Valida onChange + onBlur
   });
 
+  const [openAlert, setOpenAlert] = useState({
+    isOpen: false,
+    success: true,
+    message: "",
+    errorCode: null,
+  } as AlertType);
+
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    await signInWithEmailAndPassword(data);
+    const submitResponse = await signInWithEmailAndPassword(data);
+
+    setOpenAlert({
+      isOpen: true,
+      success: submitResponse.success,
+      message: submitResponse.message,
+      errorCode: submitResponse.errors,
+    });
+  };
+
+  const handleCloseAlert = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert({
+      isOpen: false,
+      success: true,
+      message: "",
+      errorCode: null,
+    });
   };
 
   return (
@@ -92,10 +134,10 @@ export const SignInForm = () => {
                     error={errors.password ? true : false}
                     color={errors.password ? "error" : "secondary"}
                   >
-                    <InputLabel htmlFor="password">E-mail</InputLabel>
+                    <InputLabel htmlFor="password">Senha</InputLabel>
                     <OutlinedInput
                       id="password"
-                      label="E-mail"
+                      label="Senha"
                       type="password"
                       {...field}
                       value={field.value || ""}
@@ -183,6 +225,30 @@ export const SignInForm = () => {
             <span style={{ marginLeft: 8 }}>Acessar com Google</span>
           </Button>
         </form> */}
+
+      <Snackbar
+        open={openAlert.isOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        {openAlert.success ? (
+          <Alert
+            onClose={handleCloseAlert}
+            severity="success"
+          >
+            {openAlert.message}
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleCloseAlert}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {openAlert.message}
+          </Alert>
+        )}
+      </Snackbar>
     </>
   );
 };

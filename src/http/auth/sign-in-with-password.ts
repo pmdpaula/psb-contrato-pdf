@@ -1,6 +1,6 @@
 import type { SignInFormData } from "@/data/dto/user-dto";
 
-import { apiClient } from "./api-client";
+import { apiClient } from "../api-client";
 
 // interface SignInWithPasswordRequest {
 //   email: string;

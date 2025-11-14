@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { type SignInFormData } from "@/data/dto/user-dto";
-import { signInWithPassword } from "@/http/sign-in-with-password";
+import { signInWithPassword } from "@/http/auth/sign-in-with-password";
 
 export async function signInWithEmailAndPassword(data: SignInFormData) {
   const { email, password } = data;
@@ -24,6 +24,7 @@ export async function signInWithEmailAndPassword(data: SignInFormData) {
       path: "/",
     });
   } catch (error) {
+    console.log("🚀 ~ signInWithEmailAndPassword ~ error:", error);
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();
 

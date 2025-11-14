@@ -3,7 +3,7 @@
 import { HTTPError } from "ky";
 
 import type { SignUpFormData } from "@/data/dto/user-dto";
-import { signUp } from "@/http/sign-up";
+import { signUp } from "@/http/auth/sign-up";
 
 export async function signUpAction(data: SignUpFormData) {
   const { name, email, password } = data;

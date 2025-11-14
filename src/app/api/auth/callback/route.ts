@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 
 // import { acceptInvite } from "@/http/accept-invite";
-import { signInWithGitHub } from "@/http/sign-in-with-github";
+import { signInWithGitHub } from "@/http/auth/sign-in-with-github";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
