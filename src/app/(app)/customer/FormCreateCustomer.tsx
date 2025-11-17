@@ -9,6 +9,9 @@ import {
   FormControl,
   FormHelperText,
   InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   Stack,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -16,6 +19,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import type { CreateCustomerDto } from "@/data/dto/customer-dto";
 import { createCustomerDtoSchema } from "@/data/dto/customer-dto";
+import {
+  customerContactTypeDescription,
+  customerContactTypeType,
+} from "@/lib/customer-contact-type";
 
 import { createCustomerAction } from "./action";
 import { useCustomerContext } from "./CustomerContext";
@@ -28,22 +35,51 @@ export const FormCreateCustomer = () => {
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isLoading, isValid, isDirty },
   } = useForm<CreateCustomerDto>({
     defaultValues: {
-      registerNumber: "",
-      email: "",
-      phoneNumber1: "",
-      phoneNumber2: "",
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-      country: "",
+      name: "",
+      registerNumber: null,
+      contact1: null,
+      contactType1: null,
+      contact2: null,
+      contactType2: null,
+      address: null,
+      city: null,
+      state: null,
+      zipCode: null,
+      country: null,
     },
     resolver: zodResolver(createCustomerDtoSchema),
     mode: "all", // Valida onChange + onBlur
   });
+  const [contactType1, contactType2] = watch(["contactType1", "contactType2"]);
+
+  function handleChangeContactType1(event: SelectChangeEvent<string>) {
+    const selectedType = event.target.value as string;
+
+    if (!selectedType) {
+      // Se o tipo for limpo, também limpa o contato correspondente
+      setValue("contact1", null);
+      setValue("contactType1", null);
+    } else {
+      setValue("contactType1", selectedType);
+    }
+  }
+
+  function handleChangeContactType2(event: SelectChangeEvent<string>) {
+    const selectedType = event.target.value as string;
+
+    if (!selectedType) {
+      // Se o tipo for limpo, também limpa o contato correspondente
+      setValue("contact2", null);
+      setValue("contactType2", null);
+    } else {
+      setValue("contactType2", selectedType);
+    }
+  }
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(isLoading);
 
@@ -64,7 +100,9 @@ export const FormCreateCustomer = () => {
   const onSubmit: SubmitHandler<CreateCustomerDto> = async (data) => {
     const submitResponse = await createCustomerAction(data);
 
-    setOpenForm({ open: false, action: "none" });
+    if (submitResponse.success) {
+      setOpenForm({ open: false, action: "none" });
+    }
 
     setOpenAlertSnackBar({
       isOpen: true,
@@ -164,99 +202,178 @@ export const FormCreateCustomer = () => {
             />
 
             <Controller
-              name="email"
+              name="contactType1"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <FormControl
                   fullWidth
-                  error={errors.email ? true : false}
-                  color={errors.email ? "error" : "secondary"}
+                  error={errors.contactType1 ? true : false}
+                  color={errors.contactType1 ? "error" : "secondary"}
                 >
                   <InputLabel
                     size="small"
-                    htmlFor="email"
+                    htmlFor="contactType1"
                   >
-                    E-mail
+                    Tipo
+                  </InputLabel>
+
+                  <Select
+                    labelId="select-label-contactType1"
+                    id="contactType1"
+                    {...field}
+                    value={field.value || ""}
+                    label="Tipo"
+                    size="small"
+                    onChange={handleChangeContactType1}
+                  >
+                    <MenuItem value="">
+                      <em>Selecione um tipo</em>
+                    </MenuItem>
+
+                    {Object.values(customerContactTypeType).map((type) => {
+                      const description = customerContactTypeDescription[type];
+
+                      return (
+                        <MenuItem
+                          key={type}
+                          value={type}
+                        >
+                          {description}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+
+                  {/* <StyledFormHelperText component="p">
+                    {errors.contactType1?.message}
+                  </StyledFormHelperText> */}
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="contact1"
+              control={control}
+              render={({ field }) => (
+                <FormControl
+                  fullWidth
+                  error={errors.contact1 ? true : false}
+                  color={errors.contact1 ? "error" : "secondary"}
+                  disabled={!contactType1}
+                >
+                  <InputLabel
+                    size="small"
+                    htmlFor="contact1"
+                  >
+                    Contato
                   </InputLabel>
 
                   <StyledOutlinedInput
                     size="small"
-                    id="email"
-                    label="E-mail"
+                    id="contact1"
+                    label="Contato"
                     {...field}
                     value={field.value || ""}
-                    error={errors.email ? true : false}
+                    error={errors.contact1 ? true : false}
                   />
 
                   <StyledFormHelperText component="p">
-                    {errors.email?.message}
+                    {errors.contact1
+                      ? errors.contact1.message
+                      : contactType1 &&
+                          contactType1 !== customerContactTypeType.OTHER
+                        ? "Campo obrigatório quando tipo selecionado"
+                        : "Selecione um tipo de contato primeiro"}
                   </StyledFormHelperText>
                 </FormControl>
               )}
             />
 
             <Controller
-              name="phoneNumber1"
+              name="contactType2"
               control={control}
+              rules={{ required: true }}
               render={({ field }) => (
                 <FormControl
                   fullWidth
-                  error={errors.phoneNumber1 ? true : false}
-                  color={errors.phoneNumber1 ? "error" : "secondary"}
+                  error={errors.contactType2 ? true : false}
+                  color={errors.contactType2 ? "error" : "secondary"}
                 >
                   <InputLabel
                     size="small"
-                    htmlFor="phoneNumber1"
+                    htmlFor="contactType2"
                   >
-                    Telefone 1
+                    Tipo
                   </InputLabel>
 
-                  <StyledOutlinedInput
-                    size="small"
-                    id="phoneNumber1"
-                    label="Telefone 1"
+                  <Select
+                    labelId="select-label-contactType2"
+                    id="contactType2"
                     {...field}
                     value={field.value || ""}
-                    error={errors.phoneNumber1 ? true : false}
-                  />
+                    label="Tipo"
+                    size="small"
+                    onChange={handleChangeContactType2}
+                  >
+                    <MenuItem value="">
+                      <em>Selecione um tipo</em>
+                    </MenuItem>
 
-                  <StyledFormHelperText component="p">
-                    {errors.phoneNumber1?.message}
-                  </StyledFormHelperText>
+                    {Object.values(customerContactTypeType).map((type) => {
+                      const description = customerContactTypeDescription[type];
+
+                      return (
+                        <MenuItem
+                          key={type}
+                          value={type}
+                        >
+                          {description}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+
+                  {/* <StyledFormHelperText component="p">
+                    {errors.contactType2?.message}
+                  </StyledFormHelperText> */}
                 </FormControl>
               )}
             />
 
             <Controller
-              name="phoneNumber2"
+              name="contact2"
               control={control}
               render={({ field }) => (
                 <FormControl
                   fullWidth
-                  error={errors.phoneNumber2 ? true : false}
-                  color={errors.phoneNumber2 ? "error" : "secondary"}
+                  error={errors.contact2 ? true : false}
+                  color={errors.contact2 ? "error" : "secondary"}
+                  disabled={!contactType2}
                 >
                   <InputLabel
                     size="small"
-                    htmlFor="phoneNumber2"
+                    htmlFor="contact2"
                   >
-                    Telefone 2
+                    Contato
                   </InputLabel>
 
                   <StyledOutlinedInput
                     size="small"
-                    id="phoneNumber2"
-                    label="Telefone 2"
+                    id="contact2"
+                    label="Contato"
                     {...field}
                     value={field.value || ""}
-                    error={errors.phoneNumber2 ? true : false}
+                    error={errors.contact2 ? true : false}
                   />
 
                   <StyledFormHelperText component="p">
-                    {errors.phoneNumber2
-                      ? errors.phoneNumber2.message
-                      : "habilitado quando o telefone 1 for preenchido"}
+                    {errors.contact2
+                      ? errors.contact2.message
+                      : contactType2 &&
+                          contactType2 !== customerContactTypeType.OTHER
+                        ? "Campo obrigatório quando tipo selecionado"
+                        : "Selecione um tipo de contato primeiro"}
                   </StyledFormHelperText>
                 </FormControl>
               )}

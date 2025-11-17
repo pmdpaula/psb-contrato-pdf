@@ -12,7 +12,10 @@ import {
   type FormHelperTextProps,
   Input,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
+  type SelectChangeEvent,
   Stack,
   styled,
 } from "@mui/material";
@@ -21,12 +24,12 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import type { CustomerDto } from "@/data/dto/customer-dto";
 import { customerDtoSchema } from "@/data/dto/customer-dto";
-
 import {
-  createCustomerAction,
-  deleteCustomerAction,
-  editCustomerAction,
-} from "./action";
+  customerContactTypeDescription,
+  customerContactTypeType,
+} from "@/lib/customer-contact-type";
+
+import { deleteCustomerAction, editCustomerAction } from "./action";
 import { useCustomerContext } from "./CustomerContext";
 
 export const StyledFormHelperText = styled(FormHelperText)<FormHelperTextProps>(
@@ -39,6 +42,12 @@ export const StyledFormHelperText = styled(FormHelperText)<FormHelperTextProps>(
 );
 
 export const StyledOutlinedInput = styled(OutlinedInput, {
+  shouldForwardProp: (prop) => prop !== "error",
+})<{ error?: boolean }>(({ error }) => ({
+  boxShadow: error ? "0px 0px 12px 2px rgba(255,0,0,0.5)" : "",
+}));
+
+export const StyledInput = styled(Input, {
   shouldForwardProp: (prop) => prop !== "error",
 })<{ error?: boolean }>(({ error }) => ({
   boxShadow: error ? "0px 0px 12px 2px rgba(255,0,0,0.5)" : "",
@@ -57,24 +66,53 @@ export const FormCustomer = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors, isLoading, isValid, isDirty },
   } = useForm<CustomerDto>({
     defaultValues: {
       ...customerContext,
-      registerNumber: customerContext.registerNumber || "",
-      email: customerContext.email || "",
-      phoneNumber1: customerContext.phoneNumber1 || "",
-      phoneNumber2: customerContext.phoneNumber2 || "",
-      address: customerContext.address || "",
-      city: customerContext.city || "",
-      state: customerContext.state || "",
-      zipCode: customerContext.zipCode || "",
-      country: customerContext.country || "",
+      registerNumber: customerContext.registerNumber || null,
+      contactType1: customerContext.contactType1 || null,
+      contact1: customerContext.contact1 || null,
+      contactType2: customerContext.contactType2 || null,
+      contact2: customerContext.contact2 || null,
+      address: customerContext.address || null,
+      city: customerContext.city || null,
+      state: customerContext.state || null,
+      zipCode: customerContext.zipCode || null,
+      country: customerContext.country || null,
     },
     resolver: zodResolver(customerDtoSchema),
     mode: "all", // Valida onChange + onBlur
   });
+
+  const [contactType1, contactType2] = watch(["contactType1", "contactType2"]);
+
+  function handleChangeContactType1(event: SelectChangeEvent<string>) {
+    const selectedType = event.target.value as string;
+
+    if (!selectedType) {
+      // Se o tipo for limpo, também limpa o contato correspondente
+      setValue("contact1", null);
+      setValue("contactType1", null);
+    } else {
+      setValue("contactType1", selectedType);
+    }
+  }
+
+  function handleChangeContactType2(event: SelectChangeEvent<string>) {
+    const selectedType = event.target.value as string;
+
+    if (!selectedType) {
+      // Se o tipo for limpo, também limpa o contato correspondente
+      setValue("contact2", null);
+      setValue("contactType2", null);
+    } else {
+      setValue("contactType2", selectedType);
+    }
+  }
+
   const [isButtonDisabled, setIsButtonDisabled] = useState(isLoading);
 
   useEffect(() => {
@@ -97,15 +135,15 @@ export const FormCustomer = () => {
   const onSubmit: SubmitHandler<CustomerDto> = async (data) => {
     let submitResponse;
 
-    if (action === "create") {
-      submitResponse = await createCustomerAction(data);
-    } else if (action === "edit") {
+    if (action === "edit") {
       submitResponse = await editCustomerAction(data);
     } else {
       submitResponse = await deleteCustomerAction(data.id);
     }
 
-    setOpenForm({ open: false, action: "none" });
+    if (submitResponse.success) {
+      setOpenForm({ open: false, action: "none" });
+    }
 
     setOpenAlertSnackBar({
       isOpen: true,
@@ -141,6 +179,7 @@ export const FormCustomer = () => {
                   fullWidth
                   error={errors.name ? true : false}
                   color={errors.name ? "error" : "secondary"}
+                  variant={action === "delete" ? "standard" : "outlined"}
                 >
                   <InputLabel
                     htmlFor="name"
@@ -149,7 +188,7 @@ export const FormCustomer = () => {
                     Nome
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="name"
                       {...field}
@@ -192,11 +231,11 @@ export const FormCustomer = () => {
                     CPF/CNPJ
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="registerNumber"
                       {...field}
-                      value={field.value}
+                      value={field.value || ""}
                       disabled={action === "delete"}
                     />
                   ) : (
@@ -226,26 +265,77 @@ export const FormCustomer = () => {
             />
 
             <Controller
-              name="email"
+              name="contactType1"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <FormControl
                   fullWidth
-                  error={errors.email ? true : false}
-                  color={errors.email ? "error" : "secondary"}
-                  disabled={action === "delete"}
+                  error={errors.contactType1 ? true : false}
+                  color={errors.contactType1 ? "error" : "secondary"}
+                  variant={action === "delete" ? "standard" : "outlined"}
                 >
                   <InputLabel
                     size="small"
-                    htmlFor="email"
+                    htmlFor="contactType1"
                   >
-                    E-mail
+                    Tipo
+                  </InputLabel>
+
+                  <Select
+                    labelId="select-label-contactType1"
+                    id="contactType1"
+                    {...field}
+                    value={field.value || ""}
+                    label="Tipo"
+                    size="small"
+                    onChange={handleChangeContactType1}
+                    disabled={action === "delete"}
+                  >
+                    <MenuItem>...</MenuItem>
+
+                    {Object.values(customerContactTypeType).map((type) => {
+                      const description = customerContactTypeDescription[type];
+
+                      return (
+                        <MenuItem
+                          key={type}
+                          value={type}
+                        >
+                          {description}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+
+                  {/* <StyledFormHelperText component="p">
+                    {errors.contactType1?.message}
+                  </StyledFormHelperText> */}
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="contact1"
+              control={control}
+              render={({ field }) => (
+                <FormControl
+                  fullWidth
+                  error={errors.contact1 ? true : false}
+                  color={errors.contact1 ? "error" : "secondary"}
+                  disabled={!contactType1}
+                  variant={action === "delete" ? "standard" : "outlined"}
+                >
+                  <InputLabel
+                    size="small"
+                    htmlFor="contact1"
+                  >
+                    Contato
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
-                      id="email"
+                      id="contact1"
                       {...field}
                       value={field.value}
                       disabled={action === "delete"}
@@ -253,41 +343,93 @@ export const FormCustomer = () => {
                   ) : (
                     <StyledOutlinedInput
                       size="small"
-                      id="email"
-                      label="E-mail"
+                      id="contact1"
+                      label="Contato"
                       {...field}
                       value={field.value || ""}
-                      error={errors.email ? true : false}
+                      error={errors.contact1 ? true : false}
                     />
                   )}
 
                   <StyledFormHelperText component="p">
-                    {errors.email?.message}
+                    {errors.contact1?.message}
                   </StyledFormHelperText>
                 </FormControl>
               )}
             />
 
             <Controller
-              name="phoneNumber1"
+              name="contactType2"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <FormControl
+                  fullWidth
+                  error={errors.contactType2 ? true : false}
+                  color={errors.contactType2 ? "error" : "secondary"}
+                  variant={action === "delete" ? "standard" : "outlined"}
+                >
+                  <InputLabel
+                    size="small"
+                    htmlFor="contactType2"
+                  >
+                    Tipo
+                  </InputLabel>
+
+                  <Select
+                    labelId="select-label-contactType2"
+                    id="contactType2"
+                    {...field}
+                    value={field.value || ""}
+                    label="Tipo"
+                    size="small"
+                    onChange={handleChangeContactType2}
+                    disabled={action === "delete"}
+                  >
+                    <MenuItem>...</MenuItem>
+
+                    {Object.values(customerContactTypeType).map((type) => {
+                      const description = customerContactTypeDescription[type];
+
+                      return (
+                        <MenuItem
+                          key={type}
+                          value={type}
+                        >
+                          {description}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+
+                  {/* <StyledFormHelperText component="p">
+                    {errors.contactType2?.message}
+                  </StyledFormHelperText> */}
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="contact2"
               control={control}
               render={({ field }) => (
                 <FormControl
                   fullWidth
-                  error={errors.phoneNumber1 ? true : false}
-                  color={errors.phoneNumber1 ? "error" : "secondary"}
-                  disabled={action === "delete"}
+                  error={errors.contact2 ? true : false}
+                  color={errors.contact2 ? "error" : "secondary"}
+                  disabled={!contactType2}
                 >
                   <InputLabel
                     size="small"
-                    htmlFor="phoneNumber1"
+                    htmlFor="contact2"
                   >
-                    Telefone 1
+                    Contato
                   </InputLabel>
+
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
-                      id="phoneNumber1"
+                      id="contact2"
                       {...field}
                       value={field.value}
                       disabled={action === "delete"}
@@ -295,64 +437,18 @@ export const FormCustomer = () => {
                   ) : (
                     <StyledOutlinedInput
                       size="small"
-                      id="phoneNumber1"
-                      label="Telefone 1"
+                      id="registerNumber"
+                      label="CPF/CNPJ"
                       {...field}
                       value={field.value || ""}
-                      error={errors.phoneNumber1 ? true : false}
+                      error={errors.registerNumber ? true : false}
                     />
                   )}
 
                   <StyledFormHelperText component="p">
-                    {errors.phoneNumber1?.message}
-                  </StyledFormHelperText>
-                </FormControl>
-              )}
-            />
-
-            <Controller
-              name="phoneNumber2"
-              control={control}
-              render={({ field }) => (
-                <FormControl
-                  fullWidth
-                  error={errors.phoneNumber2 ? true : false}
-                  color={errors.phoneNumber2 ? "error" : "secondary"}
-                >
-                  <InputLabel
-                    size="small"
-                    htmlFor="phoneNumber2"
-                  >
-                    Telefone 2
-                  </InputLabel>
-                  {action === "delete" ? (
-                    <Input
-                      size="small"
-                      id="phoneNumber2"
-                      {...field}
-                      value={field.value}
-                      disabled={
-                        action === "delete" ||
-                        !!errors.phoneNumber1 ||
-                        !watch("phoneNumber1")
-                      }
-                    />
-                  ) : (
-                    <StyledOutlinedInput
-                      size="small"
-                      id="phoneNumber2"
-                      label="Telefone 2"
-                      {...field}
-                      value={field.value || ""}
-                      error={errors.phoneNumber2 ? true : false}
-                    />
-                  )}
-
-                  <StyledFormHelperText component="p">
-                    {errors.phoneNumber2
-                      ? errors.phoneNumber2.message
-                      : action !== "delete" &&
-                        "habilitado quando o telefone 1 for preenchido"}
+                    {errors.contact2
+                      ? errors.contact2.message
+                      : "habilitado quando o telefone 1 for preenchido"}
                   </StyledFormHelperText>
                 </FormControl>
               )}
@@ -367,6 +463,7 @@ export const FormCustomer = () => {
                   error={errors.address ? true : false}
                   color={errors.address ? "error" : "secondary"}
                   disabled={action === "delete"}
+                  variant={action === "delete" ? "standard" : "outlined"}
                 >
                   <InputLabel
                     size="small"
@@ -375,7 +472,7 @@ export const FormCustomer = () => {
                     Endereço
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="address"
                       {...field}
@@ -409,6 +506,7 @@ export const FormCustomer = () => {
                   error={errors.zipCode ? true : false}
                   color={errors.zipCode ? "error" : "secondary"}
                   disabled={action === "delete"}
+                  variant={action === "delete" ? "standard" : "outlined"}
                 >
                   <InputLabel
                     size="small"
@@ -417,7 +515,7 @@ export const FormCustomer = () => {
                     CEP
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="zipCode"
                       {...field}
@@ -459,7 +557,7 @@ export const FormCustomer = () => {
                     Cidade
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="city"
                       {...field}
@@ -501,9 +599,9 @@ export const FormCustomer = () => {
                     Estado
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
-                      id="phoneNumber1"
+                      id="state"
                       {...field}
                       value={field.value}
                       disabled={action === "delete"}
@@ -543,7 +641,7 @@ export const FormCustomer = () => {
                     País
                   </InputLabel>
                   {action === "delete" ? (
-                    <Input
+                    <StyledInput
                       size="small"
                       id="country"
                       {...field}

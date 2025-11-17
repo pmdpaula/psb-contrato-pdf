@@ -8,24 +8,24 @@ export async function editCustomer({
   id,
   name,
   registerNumber,
-  email,
-  phoneNumber1,
-  phoneNumber2,
+  contactType1,
+  contact1,
+  contactType2,
+  contact2,
   address,
   city,
   state,
   zipCode,
   country,
 }: CustomerDto): Promise<unknown> {
-  console.log("🚀 ~ editCustomer ~ name:", name);
-
   const result = await apiClient.put(`customers/${id}`, {
     json: {
       name,
       registerNumber,
-      email,
-      phoneNumber1,
-      phoneNumber2,
+      contactType1,
+      contact1,
+      contactType2,
+      contact2,
       address,
       city,
       state,

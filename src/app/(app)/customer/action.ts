@@ -11,9 +11,10 @@ export async function createCustomerAction(data: CreateCustomerDto) {
   const {
     name,
     registerNumber,
-    email,
-    phoneNumber1,
-    phoneNumber2,
+    contactType1,
+    contact1,
+    contactType2,
+    contact2,
     address,
     city,
     state,
@@ -25,9 +26,10 @@ export async function createCustomerAction(data: CreateCustomerDto) {
     await createCustomer({
       name,
       registerNumber,
-      email,
-      phoneNumber1,
-      phoneNumber2,
+      contactType1,
+      contact1,
+      contactType2,
+      contact2,
       address,
       city,
       state,
@@ -35,12 +37,14 @@ export async function createCustomerAction(data: CreateCustomerDto) {
       country,
     });
   } catch (error) {
-    console.error("🚀 ~ editCustomerAction:", error);
     if (error instanceof HTTPError) {
+      console.log("🚀 ~ createCustomerAction ~ HTTPError:", error);
       const { message } = await error.response.json();
 
       return { success: false, message, errors: error.response.status };
     }
+
+    console.log("🚀 ~ createCustomerAction ~ error:", error);
 
     return {
       success: false,
@@ -62,9 +66,10 @@ export async function editCustomerAction(data: CustomerDto) {
     id,
     name,
     registerNumber,
-    email,
-    phoneNumber1,
-    phoneNumber2,
+    contactType1,
+    contact1,
+    contactType2,
+    contact2,
     address,
     city,
     state,
@@ -77,9 +82,10 @@ export async function editCustomerAction(data: CustomerDto) {
       id,
       name,
       registerNumber,
-      email,
-      phoneNumber1,
-      phoneNumber2,
+      contactType1,
+      contact1,
+      contactType2,
+      contact2,
       address,
       city,
       state,

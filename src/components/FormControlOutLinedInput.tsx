@@ -2,22 +2,7 @@ import {
   FormControl,
   type FormControlProps,
   FormHelperText,
-  OutlinedInput,
-  styled,
 } from "@mui/material";
-
-const StyledFormControlOutLinedInput = styled(OutlinedInput)(({ theme }) => ({
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: theme.palette.primary.main,
-  },
-  "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: theme.palette.primary.dark,
-  },
-  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: theme.palette.secondary.main,
-    borderWidth: 2,
-  },
-}));
 
 interface FormControlInputProps extends FormControlProps {
   action: string;
